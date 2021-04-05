@@ -1,0 +1,17 @@
+---
+- hosts: 192.168.33.11
+  remote_user: root
+  tasks:
+    - name: Task1 Instalando key jenkins apt repository
+      apt_key: url=https://pkg.jenkins.io/debian-stable/jenkins.io.key state=present
+      become: yes
+    - name: Task2 Configurando repository
+      apt_repository: repo='deb https://pkg.jenkins.io/debian-stable binary/' state=present
+      become: yes
+    - name: Task3 Instalando Jenkins
+      apt: name=jenkins update_cache=yes
+      become: yes
+    - name: Task4 Iniciando service Jenkins
+      service: name=jenkins state=started
+    - name: Task5 Output Key de Jenkins
+      shell: cat /var/lib/jenkins/secrets/initialAdminPassword
